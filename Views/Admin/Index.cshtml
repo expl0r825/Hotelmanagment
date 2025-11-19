@@ -1,0 +1,58 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Админ панел";
+}
+
+<h2>Админ панел</h2>
+<hr />
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Общо стаи</h5>
+                <h2>@Model.TotalRooms</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5 class="card-title">Общо резервации</h5>
+                <h2>@Model.TotalBookings</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Общи приходи</h5>
+                <h2>@Model.TotalRevenue.ToString("C")</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Изчакващи</h5>
+                <h2>@Model.PendingBookings</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Бързи действия</h5>
+            </div>
+            <div class="card-body">
+                <a asp-action="Rooms" class="btn btn-primary mb-2">Управление на стаи</a><br />
+                <a asp-action="Bookings" class="btn btn-info mb-2">Управление на резервации</a><br />
+                <a asp-action="Reports" class="btn btn-success mb-2">Отчети</a>
+            </div>
+        </div>
+    </div>
+</div>
+

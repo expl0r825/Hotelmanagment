@@ -1,0 +1,7 @@
+# This file ensures the images directory is tracked by git
+# Place room images here:
+# - room-single.jpg
+# - room-double.jpg
+# - room-suite.jpg
+# - room-family.jpg
+

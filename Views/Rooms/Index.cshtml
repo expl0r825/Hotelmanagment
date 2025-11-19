@@ -1,0 +1,77 @@
+@model List<Room>
+@{
+    ViewData["Title"] = "Стаи";
+}
+
+<h2>Каталог със стаи</h2>
+<hr />
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <form asp-action="Index" method="get" class="d-flex gap-2">
+            <select name="roomType" class="form-select" style="max-width: 200px;">
+                <option value="">Всички типове</option>
+                @foreach (var type in ViewBag.RoomTypes as List<string>)
+                {
+                    <option value="@type" selected="@(ViewContext.HttpContext.Request.Query["roomType"] == type)">@type</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-primary">Филтрирай</button>
+            <a asp-action="Index" class="btn btn-secondary">Изчисти</a>
+        </form>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var room in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(room.ImageUrl))
+                    {
+                        <img src="@Url.Content(room.ImageUrl)" class="card-img-top" alt="@room.RoomNumber" style="height: 250px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 250px;">
+                            <span class="text-white">Няма снимка</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">Стая @room.RoomNumber</h5>
+                        <p class="card-text"><strong>Тип: @room.RoomType</strong></p>
+                        <p class="card-text">@room.Description</p>
+                        <p class="card-text"><strong class="text-success">@room.PricePerNight.ToString("C") / нощ</strong></p>
+                        <p class="card-text">Капацитет: @room.Capacity човека</p>
+                        <p class="card-text">
+                            @if (room.IsAvailable)
+                            {
+                                <span class="badge bg-success">Налична</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Заета</span>
+                            }
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-action="Details" asp-route-id="@room.Id" class="btn btn-primary">Детайли</a>
+                        @if (User.Identity!.IsAuthenticated && room.IsAvailable)
+                        {
+                            <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-success">Резервирай</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        Няма налични стаи с избраните критерии.
+    </div>
+}
+

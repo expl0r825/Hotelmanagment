@@ -1,0 +1,91 @@
+@model Booking
+@{
+    ViewData["Title"] = "Плащане";
+}
+
+<h2>Плащане</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Детайли за резервацията</h4>
+        <table class="table">
+            <tr>
+                <th>Стая:</th>
+                <td>@Model.Room.RoomNumber - @Model.Room.RoomType</td>
+            </tr>
+            <tr>
+                <th>Настаняване:</th>
+                <td>@Model.CheckInDate.ToString("dd.MM.yyyy")</td>
+            </tr>
+            <tr>
+                <th>Напускане:</th>
+                <td>@Model.CheckOutDate.ToString("dd.MM.yyyy")</td>
+            </tr>
+            <tr>
+                <th>Брой гости:</th>
+                <td>@Model.NumberOfGuests</td>
+            </tr>
+            <tr>
+                <th>Брой нощувки:</th>
+                <td>@((Model.CheckOutDate - Model.CheckInDate).Days)</td>
+            </tr>
+            <tr>
+                <th><strong>Обща сума:</strong></th>
+                <td><strong class="text-success fs-5">@Model.TotalPrice.ToString("C")</strong></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4>Изберете метод на плащане</h4>
+        <form asp-action="ProcessPayment" method="post">
+            <input type="hidden" name="bookingId" value="@Model.Id" />
+            
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" value="CreditCard" checked>
+                    <label class="form-check-label" for="creditCard">
+                        Кредитна карта
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="debitCard" value="DebitCard">
+                    <label class="form-check-label" for="debitCard">
+                        Дебитна карта
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" value="PayPal">
+                    <label class="form-check-label" for="paypal">
+                        PayPal
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="bankTransfer" value="BankTransfer">
+                    <label class="form-check-label" for="bankTransfer">
+                        Банков превод
+                    </label>
+                </div>
+            </div>
+            
+            <div class="alert alert-info">
+                <strong>Забележка:</strong> Това е симулирано плащане. Няма реална транзакция.
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-lg">Потвърди плащането</button>
+                <a asp-controller="Rooms" asp-action="Index" class="btn btn-secondary">Отказ</a>
+            </div>
+        </form>
+    </div>
+</div>
+

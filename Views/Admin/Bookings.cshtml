@@ -1,0 +1,99 @@
+@model List<Booking>
+@{
+    ViewData["Title"] = "Управление на резервации";
+}
+
+<h2>Управление на резервации</h2>
+<hr />
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Клиент</th>
+                    <th>Стая</th>
+                    <th>Настаняване</th>
+                    <th>Напускане</th>
+                    <th>Гости</th>
+                    <th>Сума</th>
+                    <th>Статус</th>
+                    <th>Плащане</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>#@booking.Id</td>
+                        <td>@booking.User.FirstName @booking.User.LastName<br /><small>@booking.User.Email</small></td>
+                        <td>@booking.Room.RoomNumber - @booking.Room.RoomType</td>
+                        <td>@booking.CheckInDate.ToString("dd.MM.yyyy")</td>
+                        <td>@booking.CheckOutDate.ToString("dd.MM.yyyy")</td>
+                        <td>@booking.NumberOfGuests</td>
+                        <td>@booking.TotalPrice.ToString("C")</td>
+                        <td>
+                            @switch (booking.Status)
+                            {
+                                case BookingStatus.Pending:
+                                    <span class="badge bg-warning">Изчаква</span>
+                                    break;
+                                case BookingStatus.Confirmed:
+                                    <span class="badge bg-success">Потвърдена</span>
+                                    break;
+                                case BookingStatus.Cancelled:
+                                    <span class="badge bg-danger">Отменена</span>
+                                    break;
+                                case BookingStatus.Completed:
+                                    <span class="badge bg-info">Завършена</span>
+                                    break;
+                            }
+                        </td>
+                        <td>
+                            @if (booking.Payment != null)
+                            {
+                                @if (booking.Payment.Status == PaymentStatus.Completed)
+                                {
+                                    <span class="badge bg-success">Платено</span>
+                                }
+                                else if (booking.Payment.Status == PaymentStatus.Refunded)
+                                {
+                                    <span class="badge bg-info">Върнато</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning">Изчаква</span>
+                                }
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Няма</span>
+                            }
+                        </td>
+                        <td>
+                            <form asp-action="UpdateBookingStatus" method="post" class="d-inline">
+                                <input type="hidden" name="bookingId" value="@booking.Id" />
+                                <select name="status" class="form-select form-select-sm d-inline" style="width: auto;" onchange="this.form.submit()">
+                                    <option value="Pending" selected="@(booking.Status == BookingStatus.Pending)">Изчаква</option>
+                                    <option value="Confirmed" selected="@(booking.Status == BookingStatus.Confirmed)">Потвърдена</option>
+                                    <option value="Cancelled" selected="@(booking.Status == BookingStatus.Cancelled)">Отменена</option>
+                                    <option value="Completed" selected="@(booking.Status == BookingStatus.Completed)">Завършена</option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        Няма резервации.
+    </div>
+}
+

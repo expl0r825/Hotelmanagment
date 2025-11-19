@@ -1,0 +1,82 @@
+@model ReportsViewModel
+@{
+    ViewData["Title"] = "Отчети";
+}
+
+<h2>Отчети</h2>
+<hr />
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>Общи статистики</h5>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr>
+                        <th>Общи приходи:</th>
+                        <td><strong class="text-success">@Model.TotalRevenue.ToString("C")</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Месечни приходи:</th>
+                        <td><strong class="text-info">@Model.MonthlyRevenue.ToString("C")</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Общо резервации:</th>
+                        <td>@Model.TotalBookings</td>
+                    </tr>
+                    <tr>
+                        <th>Потвърдени резервации:</th>
+                        <td>@Model.ConfirmedBookings</td>
+                    </tr>
+                    <tr>
+                        <th>Процент заетост:</th>
+                        <td><strong>@Model.OccupancyRate.ToString("F2")%</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.RoomBookings.Any())
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>Статистика по типове стаи</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Тип стая</th>
+                                    <th>Брой резервации</th>
+                                    <th>Приходи</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var roomBooking in Model.RoomBookings)
+                                {
+                                    <tr>
+                                        <td>@roomBooking.RoomType</td>
+                                        <td>@roomBooking.Count</td>
+                                        <td>@roomBooking.Revenue.ToString("C")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Назад към админ панела</a>
+</div>
+

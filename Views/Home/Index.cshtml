@@ -1,0 +1,53 @@
+@model List<Room>
+@{
+    ViewData["Title"] = "Начало";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-4">Добре дошли в нашия хотел!</h1>
+    <p class="lead">Резервирайте стая онлайн и се насладете на комфорт и обслужване</p>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <a asp-controller="Rooms" asp-action="Index" class="btn btn-primary btn-lg">Прегледайте наличните стаи</a>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <h2 class="mb-4">Препоръчани стаи</h2>
+    <div class="row">
+        @foreach (var room in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(room.ImageUrl))
+                    {
+                        <img src="@Url.Content(room.ImageUrl)" class="card-img-top" alt="@room.RoomNumber" style="height: 200px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <span class="text-white">Няма снимка</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">Стая @room.RoomNumber - @room.RoomType</h5>
+                        <p class="card-text">@room.Description</p>
+                        <p class="card-text"><strong>Цена: @room.PricePerNight.ToString("C") / нощ</strong></p>
+                        <p class="card-text">Капацитет: @room.Capacity човека</p>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" class="btn btn-primary">Детайли</a>
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <a asp-controller="Booking" asp-action="Create" asp-route-roomId="@room.Id" class="btn btn-success">Резервирай</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+

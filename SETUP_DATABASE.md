@@ -32,8 +32,9 @@ Update-Database
 
 3. **Навигирайте до проекта:**
    ```cmd
-   cd "C:\Users\marto\Desktop\Актьор Педерас"
+   cd path\to\your\project
    ```
+   (Заменете `path\to\your\project` с действителния път до вашата папка)
 
 4. **Изпълнете командите:**
    ```cmd

@@ -20,17 +20,54 @@ ASP.NET Core MVC приложение за управление на хотел 
 
 ## Инсталация
 
-1. Уверете се, че имате инсталиран .NET 8.0 SDK
-2. Клонирайте или изтеглете проекта
-3. Отворете терминала в папката на проекта
-4. Изпълнете следните команди:
+### Първоначална настройка
 
-```bash
-dotnet restore
-dotnet ef migrations add InitialCreate
-dotnet ef database update
-dotnet run
-```
+1. **Клонирайте или изтеглете проекта:**
+   ```bash
+   git clone <repository-url>
+   cd HotelManagement
+   ```
+
+2. **Настройте конфигурацията:**
+   ```bash
+   # Windows
+   copy appsettings.Development.json.example appsettings.Development.json
+   
+   # Linux/Mac
+   cp appsettings.Development.json.example appsettings.Development.json
+   ```
+
+3. **Възстановете пакетите:**
+   ```bash
+   dotnet restore
+   ```
+
+4. **Създайте базата данни:**
+   
+   **Вариант A: Visual Studio (Препоръчително)**
+   - Отворете проекта в Visual Studio
+   - Tools → NuGet Package Manager → Package Manager Console
+   - Изпълнете:
+     ```powershell
+     Add-Migration InitialCreate
+     Update-Database
+     ```
+   
+   **Вариант B: Command Line**
+   ```bash
+   dotnet tool install --global dotnet-ef
+   dotnet ef migrations add InitialCreate
+   dotnet ef database update
+   ```
+
+5. **Стартирайте приложението:**
+   ```bash
+   dotnet run
+   ```
+   
+   Или в Visual Studio: **F5**
+
+📖 **Подробни инструкции:** Вижте [SETUP_GUIDE.md](SETUP_GUIDE.md)
 
 ## Първоначални данни
 
